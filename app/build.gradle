@@ -1,0 +1,158 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-android-extensions'
+}
+project.ext {
+    defaultApplicationId = "com.nmt.stockcheck"
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "com.nmt.stockcheck"
+        minSdk 29
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "SERVER_TELESERVICE_URL", '"http://13.210.63.37:8090/Teleservice/api/"'
+            buildConfigField "String", "GOOGLE_VISION_URL", '"https://vision.googleapis.com/v1/images:annotate?key="'
+            buildConfigField "String", "SERVER_OCR_AUTH_URL", '"https://192.168.1.163:8091/v1/"'
+            buildConfigField "String", "SERVER_OCR_URL", '"https://192.168.1.163:8090/v1/"'
+            applicationIdSuffix ".debug"
+            resValue "string", "app_name", "StockCheck Debug"
+            manifestPlaceholders = [ applicationIdWithSuffix: defaultApplicationId + applicationIdSuffix ]
+        }
+
+        production {
+            initWith debug
+            applicationIdSuffix ""
+            resValue "string", "app_name", "StockCheck"
+            manifestPlaceholders = [ applicationIdWithSuffix: defaultApplicationId + applicationIdSuffix ]
+            buildConfigField "String", "SERVER_OCR_AUTH_URL", '"https://auth.siliconlens.com.au/v1/"'
+            buildConfigField "String", "SERVER_OCR_URL", '"https://api.siliconlens.com.au/v1/"'
+
+        }
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    dataBinding {
+        enabled = true
+    }
+    sourceSets {
+        main {
+            res.srcDirs = [
+                    'src/main/res',
+                    'src/main/res-main',
+                    'src/main/res-screen/login',
+            ]
+        }
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def project = "StockCheck"
+            def date = new Date();
+            def formattedDate = date.format('ddMMyy')
+            //def isSigned=variant.variantData.isSigned()?"signed":"unsigned"
+            outputFileName = "${project}-${variant.name}-${variant.versionName}-${formattedDate}.apk"
+
+        }
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.exifinterface:exifinterface:1.3.2'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0@arr'
+
+    //ripple effect
+    implementation 'com.balysv:material-ripple:1.0.2'
+    implementation 'com.afollestad.material-dialogs:core:3.3.0'
+
+    //lottie animation
+    implementation 'com.airbnb.android:lottie:2.5.1'
+
+
+    //multidex
+    implementation 'androidx.multidex:multidex:2.0.1'
+
+    // Koin for Android
+    var koin_version="3.2.0"
+    implementation "io.insert-koin:koin-core:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
+    // or Koin for Lifecycle scoping
+    //implementation "org.koin:koin-androidx-scope:$koin_version"
+    // or Koin for Android Architecture ViewModel
+    //implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    // or Koin for Android Fragment Factory (unstable version)
+    //implementation "org.koin:koin-androidx-fragment:$koin_version"
+
+    // Retrofit dependency
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.7.2'
+    // Lifecycle dependency
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    // Coroutines dependency
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3'
+
+    //Gson
+    implementation 'com.google.code.gson:gson:2.8.7'
+
+    //camera
+    api 'com.otaliastudios:cameraview:2.7.2'
+
+    //Java joda time
+    implementation 'net.danlew:android.joda:2.9.9.4'
+
+    //runtime permission
+    implementation 'com.github.tbruyelle:rxpermissions:0.12'
+    implementation "io.reactivex.rxjava3:rxjava:3.1.5"
+
+    //Wrapper network response
+    implementation "com.github.haroldadmin:NetworkResponseAdapter:4.2.1"
+
+    //toast
+    implementation 'com.github.GrenderG:Toasty:1.3.0'
+
+    //crop-img
+
+    //noinspection GradleCompatible
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+
+    //QR BAR
+    implementation 'me.dm7.barcodescanner:zxing:1.9'
+
+}

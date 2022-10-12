@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout android:background="@color/black"
+        android:layout_width="match_parent" android:id="@+id/ll_root"
+        android:layout_height="match_parent">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <com.otaliastudios.cameraview.CameraView
+                android:id="@+id/camera"
+                android:keepScreenOn="true"
+                app:cameraAutoFocusResetDelay="1000"
+                android:layout_width="wrap_content"
+                app:cameraPlaySounds="false"
+                android:layout_height="wrap_content"
+                app:cameraAutoFocusMarker="@string/cameraview_default_autofocus_marker"/>
+
+            <com.nmt.stockcheck.view.control.CameraOverlayViewGroup
+                android:visibility="invisible"
+                android:layout_width="match_parent" android:id="@+id/overlay_view"
+                android:layout_height="match_parent"/>
+
+            <ImageView
+                android:id="@+id/captured_image"
+                android:layout_width="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_height="@dimen/camera_height"
+                android:src="@drawable/textbox_white_solid_trans"
+                android:elevation="8sp" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:gravity="center"
+            android:background="@drawable/camera_capture_bg"
+            android:id="@+id/btn_take"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginBottom="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+
+
+    </RelativeLayout>
+</layout>
+
